@@ -1,88 +1,104 @@
-/**
- * @author Mohammed Arqam Ali Saad <arqam.ali16@gmail.com>
- * @description Login page
- */
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 
-import React, { Component } from 'react'
-import { Input, Form, Checkbox, Button, PageHeader, Row, Col } from 'antd'
+import { Input, Form, Button, Card, Layout, Modal, Typography, Avatar, Space, Divider, Row, Col } from 'antd';
+import ShahadaImage from '../../assests/shahada-logo.svg';
+import _ from 'lodash';
 
+class LoginCard extends Component<any, any> {
+	onLogin = async (values: any) => {
+		const { actions } = this.props;
+		actions.login(values, this.props.history);
+	};
 
+	showForgotMessage = () => {
+		Modal.warning({
+			title: '',
+			content: 'Please contact admin to reset the password',
+		});
+	};
 
+	render() {
+		const { loginLoading } = this.props;
+		const entity_id = location.hash.slice(1, location.hash.length);
+		return (
+			<Layout style={{ width: '100%', height: '100%' }}>
+				<Row style={{ width: '100%', height: '100%' }}>
+					<Col span={16} className='layout'></Col>
+					<Col span={8} style={{ backgroundColor: 'white' }}>
+						<div style={{ marginTop: '40%' }}>
+							<Space direction='vertical' size='middle' align='center' style={{ marginLeft: '35%' }}>
+								<Avatar
+									src={ShahadaImage}
+									size='large'
+									shape='square'
+									style={{ width: '120px' }}
+								></Avatar>
+								<Typography.Title
+									level={4}
+									style={{ textAlign: 'center', fontFamily: 'sans-serif', fontWeight: 400 }}
+								>
+									Login to Shahahda
+								</Typography.Title>
+							</Space>
+							<Form
+								name='basic'
+								onFinish={this.onLogin}
+								initialValues={{ entity_id: entity_id ? entity_id : undefined }}
+								style={{ margin: '10%' }}
+							>
+								<Form.Item
+									// label='Entity ID'
+									name='entity_id'
+									rules={[{ required: true, message: 'Please input your entity id!' }]}
+								>
+									<Input
+										disabled={!_.isEmpty(entity_id)}
+										placeholder='Entity ID'
+										style={{ height: '40px', borderRadius: '67px' }}
+									/>
+								</Form.Item>
+								<Form.Item
+									// label='Username'
+									name='username'
+									rules={[{ required: true, message: 'Please input your username!' }]}
+								>
+									<Input placeholder='Username' style={{ height: '40px', borderRadius: '67px' }} />
+								</Form.Item>
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-
-
-
-/**
- * Class Component to render Login Page
- * @class
- */
-class Login extends Component<any> {
-
-  /**
-   * Function to handle on submit login credentials
-   * @param fieldValues
-   */
-  onFinish = (fieldValues: object) => {
-    this.props.history.push('/home-tax')
-  }
-
-  /** Render */
-  render() {
-    console.log(this.props);
-    return (
-      <div style={{ height: '100%', width: '100%' }}>
-        <PageHeader
-          style={{ height: '11%' }}
-          className="site-page-header"
-          title="Investabook"
-        />
-        <Row style={{ height: '89%' }}>
-          <Col span={12}  >
-            <div className='image-centre'>
-              <img src='src\assests\pngwave (8).png' />
-            </div>
-          </Col >
-          <Col span={12} className='form-centre'>
-
-            <Form
-              {...layout}
-              name="basic"
-              onFinish={this.onFinish}
-            >
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[{ required: true, message: 'Please input your username!' }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
-              >
-                <Input.Password />
-              </Form.Item>
-              <Form.Item name="remember" valuePropName="checked" wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-
-              <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
-      </div>
-    )
-  }
+								<Form.Item
+									// label='Password'
+									name='password'
+									rules={[{ required: true, message: 'Please input your password!' }]}
+								>
+									<Input.Password
+										placeholder='Password'
+										style={{ height: '40px', borderRadius: '67px' }}
+									/>
+								</Form.Item>
+								<Form.Item>
+									<Button type='link' onClick={this.showForgotMessage}>
+										Forgot Password ?
+									</Button>
+								</Form.Item>
+								<Form.Item>
+									<Button
+										shape='round'
+										type='primary'
+										htmlType='submit'
+										style={{ width: '100%' }}
+										loading={loginLoading}
+									>
+										Login
+									</Button>
+								</Form.Item>
+							</Form>
+						</div>
+					</Col>
+				</Row>
+			</Layout>
+		);
+	}
 }
 
-
-export default Login
+export default withRouter(LoginCard);

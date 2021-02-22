@@ -3,7 +3,6 @@
  * @description Container component for Login page
  */
 
-import LoginPage from './Login';
-import AppLogic from '../../Logics/ApiLogic';
+import ForgorpasswordCard from './ForgorpasswordCard';
 
-export default AppLogic(LoginPage);
+export default ForgorpasswordCard;

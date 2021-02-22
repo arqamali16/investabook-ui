@@ -1,3 +1,4 @@
-import App from "./App";
+import App from './App';
+import LayoutLogic from '../../Logics/ApiLogic';
 
-export default App;
+export default LayoutLogic(App);
